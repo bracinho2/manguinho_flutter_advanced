@@ -38,4 +38,5 @@ git config --edit --global
 	l = !git log --pretty=format:'%C(blue)%h%C(red)%d %C(white)%s %C(cyan)[%cn] %C(green)%cr'
 ```
 
-
+## Editor Config
+EditorConfig is awesome: https://EditorConfig.org
