@@ -7,8 +7,11 @@ A new Flutter project.
 ```bash
 git init
 git add .
-git commit -m "Minha mensagem de commit"
+git commit -m "Initial Setup"
 git push origin main
+
+```bash
+git config --edit --global
 
 
 This project is a starting point for a Flutter application.
