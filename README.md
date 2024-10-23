@@ -45,3 +45,11 @@ EditorConfig is awesome: https://EditorConfig.org
 - Mock: precupaçao com input;
 - stube: preocupação com o output;
 - spy: preocupação com input e output;
+
+## TDD
+
+"SUT";
+
+Red
+Green
+Refactor
