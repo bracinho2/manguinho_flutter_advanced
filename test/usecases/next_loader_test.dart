@@ -1,20 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:manguinho_flutter_advanced/domain/entities/next_event.dart';
 
 import 'package:manguinho_flutter_advanced/domain/entities/next_event_player.dart';
-
-class NextEvent {
-  final String groupName;
-  final DateTime date;
-  final List<NextEventPlayer> players;
-  NextEvent({
-    required this.groupName,
-    required this.date,
-    required this.players,
-  });
-}
 
 class NextEventLoader {
   final LoadNextEventRepository repo;
