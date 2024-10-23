@@ -53,3 +53,7 @@ EditorConfig is awesome: https://EditorConfig.org
 Red
 Green
 Refactor
+
+## Concepts
+KIS
+DRY
