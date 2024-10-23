@@ -40,3 +40,8 @@ git config --edit --global
 
 ## Editor Config
 EditorConfig is awesome: https://EditorConfig.org
+
+## Double Tests
+- Mock: precupaçao com input;
+- stube: preocupação com o output;
+- spy: preocupação com input e output;
