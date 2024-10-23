@@ -39,7 +39,7 @@ class NextEventPlayer {
 
   static String _getInitials(String name) {
     final names = name.toUpperCase().split(' ');
-    final firstChar = names.first[0];
+    final firstChar = names.first.split('').firstOrNull ?? '-';
     final lastChar =
         names.last.split('').elementAtOrNull(names.length == 1 ? 1 : 0) ?? '';
     return '$firstChar$lastChar';
@@ -67,5 +67,9 @@ void main() {
     expect(initialsOf('Alexandre Ernzen'), 'AE');
     expect(initialsOf('Alexandre'), 'AL');
     expect(initialsOf('a'), 'A');
+  });
+
+  test('should return "-" when name is empty', () {
+    expect(initialsOf(''), '-');
   });
 }
