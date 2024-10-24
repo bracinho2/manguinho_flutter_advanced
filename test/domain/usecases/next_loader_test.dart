@@ -7,6 +7,8 @@ import 'package:manguinho_flutter_advanced/domain/entities/next_event_player.dar
 import 'package:manguinho_flutter_advanced/domain/repositories/load_next_event_repository.dart';
 import 'package:manguinho_flutter_advanced/domain/usecases/next_event_loader.dart';
 
+import '../../helpers/fakes.dart';
+
 class LoadNextEventSpyRepository implements LoadNextEventRepository {
   String? groupId;
   var callsCount = 0;
@@ -30,7 +32,7 @@ void main() {
   late NextEventLoader sut;
 
   setUp(() {
-    groupId = Random().nextInt(50000).toString();
+    groupId = anyString();
     repo = LoadNextEventSpyRepository();
     repo.output = NextEvent(
       groupName: 'any group',
