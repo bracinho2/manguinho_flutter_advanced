@@ -18,8 +18,11 @@ class LoadNextEventHttpRepository {
 
   Future<void> loadNextEvent({required String groupId}) async {
     final uri = Uri.parse(url.replaceAll(':groupId', groupId));
-
-    await httpClient.get(uri);
+    final headers = {
+      'content-type': 'application/json',
+      'accept': 'application/json'
+    };
+    await httpClient.get(uri, headers: headers);
   }
 }
 
@@ -27,6 +30,7 @@ class HttpClientSpy implements Client {
   String? method;
   int callsCount = 0;
   String? url;
+  Map<String, String>? headers;
 
   @override
   void close() {}
@@ -41,6 +45,7 @@ class HttpClientSpy implements Client {
   Future<Response> get(Uri url, {Map<String, String>? headers}) async {
     method = 'get';
     this.url = url.toString();
+    this.headers = headers;
     callsCount++;
     return Response('body', 200);
   }
@@ -110,5 +115,11 @@ void main() {
   test('shoud request with correct url', () async {
     await sut.loadNextEvent(groupId: groupId);
     expect(httpClient.url, 'https://domain.com/api/groups/$groupId/next_event');
+  });
+
+  test('shoud request with correct headers', () async {
+    await sut.loadNextEvent(groupId: groupId);
+    expect(httpClient.headers?['content-type'], 'application/json');
+    expect(httpClient.headers?['accept'], 'application/json');
   });
 }
