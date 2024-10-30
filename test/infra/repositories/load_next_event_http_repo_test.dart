@@ -70,6 +70,12 @@ class HttpClientSpy implements Client {
   String responseJson = '';
   int statusCode = 200;
 
+  void simulateBadRequestError() => statusCode = 400;
+  void simulateUnauthorizedError() => statusCode = 401;
+  void simulateForbiddenError() => statusCode = 403;
+  void simulateNotFoundError() => statusCode = 404;
+  void simulateServerError() => statusCode = 500;
+
   @override
   Future<Response> get(Uri url, {Map<String, String>? headers}) async {
     method = 'get';
@@ -198,31 +204,31 @@ void main() {
   });
 
   test('shoud throw UnexpectedError on 400', () {
-    httpClient.statusCode = 400;
+    httpClient.simulateBadRequestError();
     final future = sut.loadNextEvent(groupId: groupId);
     expect(future, throwsA(DomainError.unexpected));
   });
 
   test('shoud throw UnexpectedError on 401', () {
-    httpClient.statusCode = 401;
+    httpClient.simulateUnauthorizedError();
     final future = sut.loadNextEvent(groupId: groupId);
     expect(future, throwsA(DomainError.sessionExpired));
   });
 
   test('shoud throw UnexpectedError on 403', () {
-    httpClient.statusCode = 400;
+    httpClient.simulateForbiddenError();
     final future = sut.loadNextEvent(groupId: groupId);
     expect(future, throwsA(DomainError.unexpected));
   });
 
   test('shoud throw UnexpectedError on 404', () {
-    httpClient.statusCode = 404;
+    httpClient.simulateNotFoundError();
     final future = sut.loadNextEvent(groupId: groupId);
     expect(future, throwsA(DomainError.unexpected));
   });
 
   test('shoud throw UnexpectedError on 500', () {
-    httpClient.statusCode = 500;
+    httpClient.simulateServerError();
     final future = sut.loadNextEvent(groupId: groupId);
     expect(future, throwsA(DomainError.unexpected));
   });
