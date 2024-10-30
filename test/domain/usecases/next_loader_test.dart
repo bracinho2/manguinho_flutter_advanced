@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:manguinho_flutter_advanced/domain/entities/next_event.dart';
