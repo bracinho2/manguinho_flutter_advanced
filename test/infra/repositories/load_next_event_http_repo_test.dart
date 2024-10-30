@@ -31,16 +31,13 @@ class LoadNextEventHttpRepository {
     };
     final response = await httpClient.get(uri, headers: headers);
 
-    if (response.statusCode == 400) {
-      throw DomainError.unexpected;
-    } else if (response.statusCode == 401) {
-      throw DomainError.sessionExpired;
-    } else if (response.statusCode == 403) {
-      throw DomainError.unexpected;
-    } else if (response.statusCode == 404) {
-      throw DomainError.unexpected;
-    } else if (response.statusCode == 500) {
-      throw DomainError.unexpected;
+    switch (response.statusCode) {
+      case 200:
+        break;
+      case 401:
+        throw DomainError.sessionExpired;
+      default:
+        throw DomainError.unexpected;
     }
 
     final event = jsonDecode(response.body);
@@ -206,16 +203,16 @@ void main() {
     expect(future, throwsA(DomainError.unexpected));
   });
 
-  test('shoud throw UnexpectedError on 403', () {
-    httpClient.statusCode = 400;
-    final future = sut.loadNextEvent(groupId: groupId);
-    expect(future, throwsA(DomainError.unexpected));
-  });
-
   test('shoud throw UnexpectedError on 401', () {
     httpClient.statusCode = 401;
     final future = sut.loadNextEvent(groupId: groupId);
     expect(future, throwsA(DomainError.sessionExpired));
+  });
+
+  test('shoud throw UnexpectedError on 403', () {
+    httpClient.statusCode = 400;
+    final future = sut.loadNextEvent(groupId: groupId);
+    expect(future, throwsA(DomainError.unexpected));
   });
 
   test('shoud throw UnexpectedError on 404', () {
