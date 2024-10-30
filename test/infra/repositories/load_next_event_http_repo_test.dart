@@ -34,6 +34,8 @@ class LoadNextEventHttpRepository {
       throw DomainError.unexpected;
     } else if (response.statusCode == 403) {
       throw DomainError.unexpected;
+    } else if (response.statusCode == 404) {
+      throw DomainError.unexpected;
     }
 
     final event = jsonDecode(response.body);
@@ -201,6 +203,12 @@ void main() {
 
   test('shoud throw UnexpectedError on 403', () {
     httpClient.statusCode = 400;
+    final future = sut.loadNextEvent(groupId: groupId);
+    expect(future, throwsA(DomainError.unexpected));
+  });
+
+  test('shoud throw UnexpectedError on 404', () {
+    httpClient.statusCode = 404;
     final future = sut.loadNextEvent(groupId: groupId);
     expect(future, throwsA(DomainError.unexpected));
   });
