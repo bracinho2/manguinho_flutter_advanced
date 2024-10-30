@@ -10,7 +10,7 @@ import 'package:manguinho_flutter_advanced/domain/entities/next_event_player.dar
 import '../../helpers/fakes.dart';
 
 enum DomainError {
-  unexpectedError,
+  unexpected,
 }
 
 class LoadNextEventHttpRepository {
@@ -31,7 +31,9 @@ class LoadNextEventHttpRepository {
     final response = await httpClient.get(uri, headers: headers);
 
     if (response.statusCode == 400) {
-      throw DomainError.unexpectedError;
+      throw DomainError.unexpected;
+    } else if (response.statusCode == 403) {
+      throw DomainError.unexpected;
     }
 
     final event = jsonDecode(response.body);
@@ -194,6 +196,12 @@ void main() {
   test('shoud throw UnexpectedError on 400', () {
     httpClient.statusCode = 400;
     final future = sut.loadNextEvent(groupId: groupId);
-    expect(future, throwsA(DomainError.unexpectedError));
+    expect(future, throwsA(DomainError.unexpected));
+  });
+
+  test('shoud throw UnexpectedError on 403', () {
+    httpClient.statusCode = 400;
+    final future = sut.loadNextEvent(groupId: groupId);
+    expect(future, throwsA(DomainError.unexpected));
   });
 }
