@@ -11,6 +11,7 @@ import '../../helpers/fakes.dart';
 
 enum DomainError {
   unexpected,
+  sessionExpired,
 }
 
 class LoadNextEventHttpRepository {
@@ -32,6 +33,8 @@ class LoadNextEventHttpRepository {
 
     if (response.statusCode == 400) {
       throw DomainError.unexpected;
+    } else if (response.statusCode == 401) {
+      throw DomainError.sessionExpired;
     } else if (response.statusCode == 403) {
       throw DomainError.unexpected;
     } else if (response.statusCode == 404) {
@@ -207,6 +210,12 @@ void main() {
     httpClient.statusCode = 400;
     final future = sut.loadNextEvent(groupId: groupId);
     expect(future, throwsA(DomainError.unexpected));
+  });
+
+  test('shoud throw UnexpectedError on 401', () {
+    httpClient.statusCode = 401;
+    final future = sut.loadNextEvent(groupId: groupId);
+    expect(future, throwsA(DomainError.sessionExpired));
   });
 
   test('shoud throw UnexpectedError on 404', () {
