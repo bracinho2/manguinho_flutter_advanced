@@ -1,33 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:manguinho_flutter_advanced/domain/entities/next_event.dart';
 
-import 'package:manguinho_flutter_advanced/domain/repositories/load_next_event_repository.dart';
 import 'package:manguinho_flutter_advanced/infra/api/clients/http_get_client.dart';
-import 'package:manguinho_flutter_advanced/infra/api/mappers/next_event_player_mapper.dart';
+import 'package:manguinho_flutter_advanced/infra/api/repositories/load_next_event_api_repo.dart';
+
 import 'package:manguinho_flutter_advanced/infra/types/json.dart';
 
 import '../../../helpers/fakes.dart';
-
-class LoadNextEventApiRepository implements LoadNextEventRepository {
-  final HttpGetClient httpClient;
-  final String url;
-
-  LoadNextEventApiRepository({required this.httpClient, required this.url});
-  @override
-  Future<NextEvent> loadNextEvent({required String groupId}) async {
-    final json =
-        await httpClient.get<Json>(url: url, params: {'groupId': groupId});
-    return NextEventMapper.toObject(json);
-  }
-}
-
-class NextEventMapper {
-  static NextEvent toObject(Json json) => NextEvent(
-        groupName: json['groupName'],
-        date: DateTime.parse(json['date']),
-        players: NextEventPlayerMapper.toList(json['players']),
-      );
-}
 
 class HttpGetClientSpy implements HttpGetClient {
   String? url;
