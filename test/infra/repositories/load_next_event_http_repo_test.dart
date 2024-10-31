@@ -4,15 +4,11 @@ import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
+import 'package:manguinho_flutter_advanced/domain/entities/domain_error.dart';
 import 'package:manguinho_flutter_advanced/domain/entities/next_event.dart';
 import 'package:manguinho_flutter_advanced/domain/entities/next_event_player.dart';
 
 import '../../helpers/fakes.dart';
-
-enum DomainError {
-  unexpected,
-  sessionExpired,
-}
 
 class LoadNextEventHttpRepository {
   final Client httpClient;
