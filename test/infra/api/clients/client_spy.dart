@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 
-class HttpClientSpy implements Client {
+class ClientSpy implements Client {
   String? method;
   int callsCount = 0;
   String? url;

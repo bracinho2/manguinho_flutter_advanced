@@ -4,12 +4,12 @@ import 'package:manguinho_flutter_advanced/domain/entities/domain_error.dart';
 import 'package:manguinho_flutter_advanced/infra/api/repositories/load_next_event_http_repo.dart';
 
 import '../../../helpers/fakes.dart';
-import '../clients/http_client_spy.dart';
+import '../clients/client_spy.dart';
 
 void main() {
   late String groupId;
   late String url;
-  late HttpClientSpy httpClient;
+  late ClientSpy httpClient;
   late LoadNextEventHttpRepository sut;
 
   setUpAll(() {
@@ -18,7 +18,7 @@ void main() {
 
   setUp(() {
     groupId = anyString();
-    httpClient = HttpClientSpy();
+    httpClient = ClientSpy();
     httpClient.responseJson = '''
     {
       "groupName": "any name",

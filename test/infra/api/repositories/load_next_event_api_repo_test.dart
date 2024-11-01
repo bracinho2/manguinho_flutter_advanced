@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:manguinho_flutter_advanced/infra/api/clients/http_get_client_spy.dart';
+import '../clients/http_get_client_spy.dart';
 import 'package:manguinho_flutter_advanced/infra/api/repositories/load_next_event_api_repo.dart';
 
 import '../../../helpers/fakes.dart';
