@@ -7,9 +7,14 @@ import 'client_spy.dart';
 class HttpClient {
   final Client client;
   HttpClient({required this.client});
+
   Future<void> get({required String url}) async {
+    final headers = {
+      'content-type': 'application/json',
+      'accept': 'application/json'
+    };
     final uri = Uri.parse(url);
-    client.get(uri);
+    client.get(uri, headers: headers);
   }
 }
 
@@ -35,6 +40,12 @@ void main() {
       await sut.get(url: url);
       expect(client.url, url);
       expect(client.callsCount, 1);
+    });
+
+    test('shoud request with default headers', () async {
+      await sut.get(url: url);
+      expect(client.headers?['content-type'], 'application/json');
+      expect(client.headers?['accept'], 'application/json');
     });
   });
 }
