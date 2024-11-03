@@ -11,12 +11,19 @@ class HttpClient {
   Future<void> get({
     required String url,
     Map<String, String>? headers,
+    Map<String, String>? params,
   }) async {
     final allHeaders = (headers ?? {})
       ..addAll(
           {'content-type': 'application/json', 'accept': 'application/json'});
-    final uri = Uri.parse(url);
+    final uri = _buildUri(url: url, params: params);
     client.get(uri, headers: allHeaders);
+  }
+
+  Uri _buildUri({required String url, Map<String, String>? params}) {
+    params?.forEach((key, value) => url = url.replaceFirst(':$key', value));
+
+    return Uri.parse(url);
   }
 }
 
@@ -32,28 +39,34 @@ void main() {
   });
 
   group('get', () {
-    test('shoud request with correct method', () async {
+    test('should request with correct method', () async {
       await sut.get(url: url);
       expect(client.method, 'get');
       expect(client.callsCount, 1);
     });
 
-    test('shoud request with correct url', () async {
+    test('should request with correct url', () async {
       await sut.get(url: url);
       expect(client.url, url);
       expect(client.callsCount, 1);
     });
 
-    test('shoud request with default headers', () async {
+    test('should request with default headers', () async {
       await sut.get(url: url);
       expect(client.headers?['content-type'], 'application/json');
       expect(client.headers?['accept'], 'application/json');
     });
 
-    test('shoud append headers', () async {
+    test('should append headers', () async {
       await sut.get(url: url, headers: {'h1': 'value1', 'h2': 'value2'});
       expect(client.headers?['content-type'], 'application/json');
       expect(client.headers?['accept'], 'application/json');
+    });
+
+    test('should append headers', () async {
+      url = 'http://anyurl.com/:p1/:p2';
+      await sut.get(url: url, params: {'p1': 'v1', 'p2': 'v2'});
+      expect(client.url, 'http://anyurl.com/v1/v2');
     });
   });
 }
