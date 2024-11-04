@@ -58,3 +58,5 @@ Refactor
 KIS
 DRY
 YAGNI principle ("You Aren't Gonna Need It")
+
+# Dart Modifiers
