@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:dartx/dartx.dart';
 import 'package:http/http.dart';
 import 'package:manguinho_flutter_advanced/domain/entities/domain_error.dart';
+import 'package:manguinho_flutter_advanced/infra/api/clients/http_client.dart';
 import 'package:manguinho_flutter_advanced/infra/types/json.dart';
 
-class HttpAdapter {
+class HttpAdapter implements HttpGetClient {
   final Client client;
   HttpAdapter({required this.client});
 
+  @override
   Future<T?> get<T>({
     required String url,
     Map<String, String>? headers,
