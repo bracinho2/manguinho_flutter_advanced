@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartx/dartx.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
@@ -10,7 +12,7 @@ class HttpClient {
   final Client client;
   HttpClient({required this.client});
 
-  Future<void> get({
+  Future<T> get<T>({
     required String url,
     Map<String, String>? headers,
     Map<String, String?>? params,
@@ -24,7 +26,7 @@ class HttpClient {
 
     switch (response.statusCode) {
       case 200:
-        break;
+        return jsonDecode(response.body);
       case 401:
         throw DomainError.sessionExpired;
       default:
@@ -60,6 +62,12 @@ void main() {
 
   setUp(() {
     client = ClientSpy();
+    client.responseJson = '''
+    {
+      "key1": "value1",
+      "key2": "value2"
+    }
+    ''';
     sut = HttpClient(client: client);
     url = anyString();
   });
@@ -148,6 +156,13 @@ void main() {
       client.simulateServerError();
       final future = sut.get(url: url);
       expect(future, throwsA(DomainError.unexpected));
+    });
+
+    test('should return a Map on 200', () async {
+      final data = await sut.get(url: url);
+
+      expect(data['key1'], 'value1');
+      expect(data['key2'], 'value2');
     });
   });
 }
