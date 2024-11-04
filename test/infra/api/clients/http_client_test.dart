@@ -126,10 +126,28 @@ void main() {
       expect(future, throwsA(DomainError.unexpected));
     });
 
-    test('shoud throw UnexpectedError on 401', () {
+    test('shoud throw SessionExpired on 401', () {
       client.simulateUnauthorizedError();
       final future = sut.get(url: url);
       expect(future, throwsA(DomainError.sessionExpired));
+    });
+
+    test('shoud throw UnexpectedError on 403', () {
+      client.simulateForbiddenError();
+      final future = sut.get(url: url);
+      expect(future, throwsA(DomainError.unexpected));
+    });
+
+    test('shoud throw UnexpectedError on 404', () {
+      client.simulateNotFoundError();
+      final future = sut.get(url: url);
+      expect(future, throwsA(DomainError.unexpected));
+    });
+
+    test('shoud throw UnexpectedError on 500', () {
+      client.simulateServerError();
+      final future = sut.get(url: url);
+      expect(future, throwsA(DomainError.unexpected));
     });
   });
 }
