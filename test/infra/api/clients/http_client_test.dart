@@ -34,6 +34,8 @@ class HttpClient {
               ? data.map<Json>((e) => e as Json).toList()
               : data;
         }
+      case 204:
+        return null;
       case 401:
         throw DomainError.sessionExpired;
       default:
@@ -205,6 +207,12 @@ void main() {
       client.responseJson = '';
       final data = await sut.get(url: url);
 
+      expect(data, isNull);
+    });
+
+    test('shoud return null on 204', () async {
+      client.simulateNoContent();
+      final data = await sut.get(url: url);
       expect(data, isNull);
     });
   });
