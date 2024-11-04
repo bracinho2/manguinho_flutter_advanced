@@ -4,6 +4,7 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:manguinho_flutter_advanced/domain/entities/domain_error.dart';
+import 'package:manguinho_flutter_advanced/infra/types/json.dart';
 
 import '../../../helpers/fakes.dart';
 import 'client_spy.dart';
@@ -26,7 +27,12 @@ class HttpClient {
 
     switch (response.statusCode) {
       case 200:
-        return jsonDecode(response.body);
+        {
+          final data = jsonDecode(response.body);
+          return (T == JsonArr)
+              ? data.map<Json>((e) => e as Json).toList()
+              : data;
+        }
       case 401:
         throw DomainError.sessionExpired;
       default:
@@ -159,10 +165,23 @@ void main() {
     });
 
     test('should return a Map on 200', () async {
-      final data = await sut.get(url: url);
+      final data = await sut.get<Json>(url: url);
 
       expect(data['key1'], 'value1');
       expect(data['key2'], 'value2');
+    });
+    test('should return a List of Map on 200', () async {
+      client.responseJson = '''
+    [{
+      "key": "value1"
+    }, {
+      "key": "value2"
+    }]
+    ''';
+      final data = await sut.get<JsonArr>(url: url);
+
+      expect(data[0]['key'], 'value1');
+      expect(data[1]['key'], 'value2');
     });
   });
 }
