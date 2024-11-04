@@ -1,6 +1,6 @@
 import 'package:manguinho_flutter_advanced/infra/api/clients/http_client.dart';
 
-class HttpGetClientSpy implements HttpGetClient {
+final class HttpGetClientSpy implements HttpGetClient {
   String? url;
   int callsCount = 0;
   Map<String, String>? headers;
