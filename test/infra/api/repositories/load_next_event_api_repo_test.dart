@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:manguinho_flutter_advanced/domain/entities/domain_error.dart';
+import 'package:manguinho_flutter_advanced/domain/entities/errors.dart';
 
 import '../clients/http_get_client_spy.dart';
 import 'package:manguinho_flutter_advanced/infra/api/repositories/load_next_event_api_repo.dart';
@@ -66,6 +66,6 @@ void main() {
   test('should throw Unexpected Error on null response', () {
     httpClient.response = null;
     final future = sut.loadNextEvent(groupId: groupId);
-    expect(future, throwsA(DomainError.unexpected));
+    expect(future, throwsA(const TypeMatcher<UnexpectedError>()));
   });
 }
