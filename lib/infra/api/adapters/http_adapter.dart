@@ -13,7 +13,7 @@ final class HttpAdapter implements HttpGetClient {
   @override
   Future<T?> get<T>({
     required String url,
-    Map<String, String>? headers,
+    Json? headers,
     Map<String, String?>? params,
     Map<String, String>? queryString,
   }) async {
@@ -52,11 +52,16 @@ final class HttpAdapter implements HttpGetClient {
 
   Map<String, String> _buildHeaders({
     required String url,
-    Map<String, String>? headers,
+    Json? headers,
   }) {
-    return (headers ?? {})
-      ..addAll(
-          {'content-type': 'application/json', 'accept': 'application/json'});
+    final defaultHeaders = {
+      'content-type': 'application/json',
+      'accept': 'application/json'
+    };
+    return defaultHeaders
+      ..addAll({
+        for (final key in (headers ?? {}).keys) key: headers![key].toString()
+      });
   }
 
   Uri _buildUri(
