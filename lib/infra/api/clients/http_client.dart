@@ -1,8 +1,10 @@
+import 'package:manguinho_flutter_advanced/infra/types/json.dart';
+
 abstract interface class HttpGetClient {
   Future<T?> get<T>({
     required String url,
-    Map<String, String>? headers,
-    Map<String, String?>? params,
-    Map<String, String>? queryString,
+    Json? headers,
+    Json? params,
+    Json? queryString,
   });
 }
